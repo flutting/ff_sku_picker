@@ -1,17 +1,50 @@
 import 'ff_sku_filter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 class FFSkuPicker extends StatefulWidget {
   const FFSkuPicker({
     super.key,
     required this.conditions,
     required this.options,
+    required this.titleBuilder,
+    required this.itemBuilder,
+    required this.onSelectItem,
+    this.spacing = 0.0,
+    this.runSpacing = 0.0,
+    this.separatorBuilder,
+    this.selectedFirst = false,
+    this.padding = EdgeInsets.zero
   });
 
+  // 条件列表
   final List<FFConditionModel> conditions;
 
+  // 选项列表
   final List<FFOptionsModel> options;
+
+  // 默认选中第一个可用的选项
+  final bool selectedFirst;
+
+  // 内间距
+  final EdgeInsets padding;
+
+  // 选项的行间距 默认0.0.
+  final double spacing;
+
+  // 选项的列间距 默认0.0.
+  final double runSpacing;
+
+  // 分区标题
+  final Widget Function(int index) titleBuilder;
+
+  // 内容
+  final Widget Function(FFIndexPath indexPath, bool available, bool selected)
+      itemBuilder;
+
+  // 用法同ListView
+  final IndexedWidgetBuilder? separatorBuilder;
+
+  final Function (FFOptionsModel? model) onSelectItem;
 
   @override
   State<FFSkuPicker> createState() => _FFSkuPickerState();
@@ -19,12 +52,21 @@ class FFSkuPicker extends StatefulWidget {
 
 class _FFSkuPickerState extends State<FFSkuPicker>
     implements FFSKUDataFilterDataSource {
-  List<FFIndexPath> selectedIndexPaths = [];
-  late final FFSKUDataFilter _filter = FFSKUDataFilter(dataSource: this);
+  late final FFSKUDataFilter _filter = FFSKUDataFilter(
+    dataSource: this,
+    selectedFirst: widget.selectedFirst,
+  );
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      for (int i = 0; i < widget.options.length; i ++) {
+        widget.options[i].ffIndex = i;
+      }
+      if (widget.selectedFirst) {
+        widget.onSelectItem(_filter.currentResult);
+      }
+    });
     super.initState();
   }
 
@@ -35,10 +77,12 @@ class _FFSkuPickerState extends State<FFSkuPicker>
         return buildSectionWidget(index);
       },
       separatorBuilder: (context, index) {
-        return const SizedBox(height: 10);
+        return widget.separatorBuilder != null
+            ? widget.separatorBuilder!(context, index)
+            : const SizedBox(height: 0);
       },
+      padding: widget.padding,
       itemCount: widget.conditions.length,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
     );
   }
 
@@ -81,64 +125,29 @@ extension _UI on _FFSkuPickerState {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 16),
-        Text(model.name,
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium
-                ?.copyWith(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 16),
+        widget.titleBuilder(index),
         Wrap(
-          spacing: 16,
-          runSpacing: 16,
+          spacing: widget.spacing,
+          runSpacing: widget.runSpacing,
           children: [
             for (int i = 0; i < model.contentList.length; i++)
               buildRowWidget(FFIndexPath(index, i)),
           ],
         ),
-        const SizedBox(height: 16),
       ],
     );
   }
 
   Widget buildRowWidget(FFIndexPath indexPath) {
-    FFConditionModel model = widget.conditions[indexPath.section];
-    Color bgColor = const Color(0xFFF3F3F3);
-    Color textColor = const Color(0xFF666666);
-
-    if (_filter.availableIndexPathsSet.contains(indexPath)) {
-      textColor = const Color(0xFF333333);
-    } else {
-      textColor = const Color(0xFF999999);
-    }
-
-    if (_filter.selectedIndexPaths.contains(indexPath)) {
-      textColor = const Color(0xFFFF5A4C);
-      bgColor = const Color(0xFFFFEEED);
-    } else {
-      bgColor = const Color(0xFFF3F3F3);
-    }
-
     return GestureDetector(
       onTap: () {
         _filter.didSelectedPropertyWithIndexPath(indexPath);
-        setState(() {});
-        if (kDebugMode) {
-          print('当前选中：${_filter.currentResult}');
-        }
+        widget.onSelectItem(_filter.currentResult);
       },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Text(
-          model.contentList[indexPath.index],
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: textColor,
-              ),
-        ),
+      child: widget.itemBuilder(
+        indexPath,
+        _filter.availableIndexPathsSet.contains(indexPath),
+        _filter.selectedIndexPaths.contains(indexPath),
       ),
     );
   }

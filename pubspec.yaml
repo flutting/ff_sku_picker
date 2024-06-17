@@ -1,10 +1,12 @@
 name: ff_sku_picker
-description: "SKU picker."
-version: 0.0.1
-homepage:
+description: E-commerce project SKU selector
+version: 1.0.0
+# author: Lucian-1156868877@qq.com
+homepage: https://github.com/flutting/ff_stars
+repository: https://github.com/flutting/ff_stars
 
 environment:
-  sdk: '>=3.4.0 <4.0.0'
+  sdk: '>=3.0.0 <4.0.0'
   flutter: '>=3.3.0'
 
 dependencies:

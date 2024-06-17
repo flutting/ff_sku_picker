@@ -30,6 +30,9 @@ class FFOptionsModel {
   int stock;
   List<int> idList;
 
+  // 记录当前选项为第几个
+  int ffIndex = 0;
+
   FFOptionsModel(this.stock, this.idList);
 }
 
@@ -73,15 +76,15 @@ abstract class FFSKUDataFilterDataSource {
 
 class FFSKUDataFilter {
   _FFSKUCondition? _defaultSku;
+  FFOptionsModel? currentResult;
+  bool selectedFirst;
+  final FFSKUDataFilterDataSource dataSource;
   Set<_FFSKUCondition> _conditions = {};
   Set<FFIndexPath> selectedIndexPaths = {};
   Set<FFIndexPath> availableIndexPathsSet = {};
   Set<FFIndexPath> allAvailableIndexPaths = {};
-  late dynamic currentResult;
-  final FFSKUDataFilterDataSource dataSource;
-  bool needDefaultValue = true;
 
-  FFSKUDataFilter({required this.dataSource}) {
+  FFSKUDataFilter({required this.dataSource, required this.selectedFirst}) {
     selectedIndexPaths = {};
     initPropertiesSkuListData();
   }
@@ -165,7 +168,7 @@ class FFSKUDataFilter {
       }
 
       if (selectedIndexPaths.isEmpty &&
-          needDefaultValue &&
+          selectedFirst &&
           _defaultSku == null) {
         _defaultSku = model;
       }
