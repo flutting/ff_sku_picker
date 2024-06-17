@@ -77,8 +77,7 @@ class SkuTestPageState extends State<SkuTestPage> {
             currentModel = null;
           } else {
             currentModel = model as TestOptionsModel;
-            print(
-                '当前选中: ffIndex = ${currentModel!.ffIndex}, goodId = ${currentModel!.goodsId}');
+            // print('当前选中: ffIndex = ${currentModel!.ffIndex}, goodId = ${currentModel!.goodsId}');
           }
           setState(() {});
         },
