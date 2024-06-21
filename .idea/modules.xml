@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ff_sku_picker.iml" filepath="$PROJECT_DIR$/ff_sku_picker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/ff_sku_picker_android.iml" filepath="$PROJECT_DIR$/android/ff_sku_picker_android.iml" />
     </modules>
   </component>
 </project>

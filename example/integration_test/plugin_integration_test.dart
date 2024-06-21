@@ -7,10 +7,9 @@
 // https://docs.flutter.dev/cookbook/testing/integration/introduction
 
 
-import 'package:flutter_test/flutter_test.dart';
+// import 'package:flutter_test/flutter_test.dart';
+// import 'package:ff_sku_picker/ff_sku_picker.dart';
 import 'package:integration_test/integration_test.dart';
-
-import 'package:ff_sku_picker/ff_sku_picker.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
