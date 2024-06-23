@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ff_sku_picker/ff_sku_filter.dart';
+import 'package:ff_sku_picker/ff_sku_models.dart';
 import 'package:ff_sku_picker/ff_sku_picker.dart';
 
 void main() {
@@ -184,3 +184,9 @@ T? asT<T>(dynamic value) {
   }
   return null;
 }
+
+//连接逍遥模拟器: adb connect 127.0.0.1:21503
+//检查: flutter packages pub publish --dry-run
+//发布命令: sudo flutter packages pub publish -v(推荐)
+//发布命令: flutter packages pub publish --server=https://pub.dartlang.org(备用)
+//报错code65解决: flutter packages pub global activate devtools

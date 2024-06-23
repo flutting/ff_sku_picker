@@ -1,3 +1,3 @@
-## 1.0.0
+## 1.1.0
 
-* Implementing basic functions.
+* Complete comments, update code structure, improve configuration information, and reduce public APIs

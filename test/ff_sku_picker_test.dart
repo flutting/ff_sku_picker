@@ -5,6 +5,4 @@
 //   Future<String?> getPlatformVersion() => Future.value('42');
 // }
 
-void main() {
-
-}
+void main() {}

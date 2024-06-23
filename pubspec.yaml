@@ -1,9 +1,9 @@
 name: ff_sku_picker
-description: E-commerce project SKU selector
-version: 1.0.0
+description: E-commerce project SDK selector, you can customize the selector style, just pass in the conditions and options to complete all functions.
+version: 1.1.0
 # author: Lucian-1156868877@qq.com
-homepage: https://github.com/flutting/ff_stars
-repository: https://github.com/flutting/ff_stars
+homepage: https://github.com/flutting/ff_sku_picker
+repository: https://github.com/flutting/ff_sku_picker
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
